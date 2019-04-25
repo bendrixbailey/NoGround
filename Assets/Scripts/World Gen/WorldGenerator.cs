@@ -15,7 +15,7 @@ using UnityEngine;
  * 
  * TODO: implement a more flat type of worldgen, implement a pillar type of worldgen, implement an arch type of worldgen,
  * implement a hoop type of worldgen. 
- * Final TODO: make this function dependent upon a seed so that it generates the exact same thing if the same number string is entered
+ * 
  * 
  * Author: Bendrix Bailey
  */
@@ -39,12 +39,10 @@ public class WorldGenerator : MonoBehaviour
     private Color grassColor;
     private Color rockColor;
 
-    //[SerializeField] private bool flat;
-    //[SerializeField] private bool pillars;
-
 
     /*
      * This method is what generates the world. World is small enough so it can be generated all at once.
+     * Uses seed based randomness to create repeatable world generation while keeping it random    
      * 
      */
     void Start()
@@ -58,6 +56,9 @@ public class WorldGenerator : MonoBehaviour
         Color grass_color = Random.ColorHSV(0.19f, 0.44f, 0.3f, 1f, 0.2f, 0.4f);
         Color rock_color = Random.ColorHSV(0.5f, 1f, 0.3f, 1f, 0.3f, 0.5f);
 
+
+        //Attempted implementation of view distance fog, unity fog is crappy,
+        //need to write own fog scripts
         //RenderSettings.fog = true;
         // RenderSettings.fogColor = Random.ColorHSV(0.5f, 0.1f, 0.1f, 0.25f, 0.8f, 1f);
 
@@ -66,17 +67,23 @@ public class WorldGenerator : MonoBehaviour
         //if (seed % 2 == 0) {
         //Generates a new world type with a cubic layout.
         //More worldtypes will be implemented here, and it will be randomly chosen based off the seeed
-        new CubicWorldType(new GameObject("Landscape"), worldBlock, seed, grass_color, rock_color);
+        var unused = new CubicWorldType(new GameObject("Landscape"), worldBlock, seed, grass_color, rock_color);
         //}
-       
+
     }
 
+    /*
+     * This method is used to generate a random type of clouds for the world. All random functions use the seed
+     * that the world was created with.
+     */ 
 
     private void GenerateClouds() {
         GameObject clouds = new GameObject("Clouds");
         clouds.transform.parent = gameObject.transform;
         int width = 1000;
         int height = 100;
+
+
 
         Vector3 pos = new Vector3(Random.Range(-(width / 2), (width / 2)), Random.Range(1000, 1000 + height), Random.Range(-(width / 2), (width / 2)));
 
