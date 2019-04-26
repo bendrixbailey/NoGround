@@ -220,7 +220,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 49153572}
-  - component: {fileID: 49153573}
   m_Layer: 0
   m_Name: CameraParent
   m_TagString: Untagged
@@ -243,22 +242,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 9.440001, y: 0, z: 0}
---- !u!114 &49153573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49153571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b18c3555b8a935409add1091c1d7369, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  camTransform: {fileID: 0}
-  shakeDuration: 100
-  shakeAmount: 0.1
-  decreaseFactor: 0
 --- !u!1 &398077745
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,6 +311,7 @@ GameObject:
   - component: {fileID: 818310002}
   - component: {fileID: 818310004}
   - component: {fileID: 818310003}
+  - component: {fileID: 818310005}
   m_Layer: 0
   m_Name: GliderCamera
   m_TagString: Untagged
@@ -403,6 +387,22 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &818310005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818310001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b18c3555b8a935409add1091c1d7369, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camTransform: {fileID: 0}
+  shakeDuration: 100
+  shakeAmount: 0.1
+  decreaseFactor: 0
 --- !u!1 &1150689489
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,7 +972,7 @@ MonoBehaviour:
   speedIncreaseMultiplier: 0.2
   chaseCam: {fileID: 49153572}
   gliderModel: {fileID: 1796982124}
-  cameraShake: {fileID: 49153573}
+  cameraShake: {fileID: 818310005}
 --- !u!65 &1943105298
 BoxCollider:
   m_ObjectHideFlags: 0
