@@ -17,24 +17,28 @@ using UnityEngine;
  * 
  * author: Bendrix Bailey
  * 
- */ 
+ */
 public class GliderController : MonoBehaviour {
 
     [Header("Movmement Attributes")]
-    [SerializeField] float startSpeed;
-    [SerializeField] float maxSpeed;
+    [SerializeField] float startSpeed = 0f;
+    [SerializeField] float maxSpeed = 120f;
     [SerializeField] float horiTurnSpeed = 1;
     [SerializeField] float veriTurnSpeed = 2;
     [SerializeField] float dragAmount = 0.01f;
-
     [SerializeField] float speedMultiplier;
     [SerializeField] float speedIncreaseMultiplier;
+
+    [Header("Rotation Constraints")]
+    [SerializeField] float maxPitchDown = -90f;
+    [SerializeField] float maxPitchUp = 90f;
 
     [Header("Objects")]
     [SerializeField] Transform chaseCam;
     [SerializeField] GameObject gliderModel;
     [SerializeField] CameraShake cameraShake;
-    float speed;
+
+    private float speed;
 
 
 	// Use this for initialization
@@ -63,30 +67,32 @@ public class GliderController : MonoBehaviour {
         speed -= transform.forward.y * speedIncreaseMultiplier;
 
 
-        //handles rotation of the glider based off of the input from vertical and horizontal
-        //axes;
-        transform.Rotate(Input.GetAxis("Vertical") * veriTurnSpeed, 0.0f, 0.0f);
+        //handles rotation of the glider based off of the input from vertical and horizontal axes
+
+
+        transform.Rotate(Input.GetAxis("Vertical"), 0.0f, 0.0f);
         transform.Rotate(0.0f, Input.GetAxis("Horizontal") * horiTurnSpeed, 0.0f, Space.World);
 
+
+        Vector3 currentRotation = transform.localRotation.eulerAngles;
+        currentRotation.x = Mathf.Clamp(currentRotation.x, maxPitchUp, maxPitchDown);
+        transform.localRotation = Quaternion.Euler(currentRotation);
+
+
+
+
         float tiltAmount = Input.GetAxis("Horizontal");
-        float pitchAmount = Input.GetAxis("Vertical");
-
-
-
-
-        //handles tilt logic to tilt the model of the glider for visual appearance
         if (tiltAmount > 0) {
             gliderModel.transform.localRotation = Quaternion.Lerp(gliderModel.transform.localRotation, Quaternion.Euler(gliderModel.transform.localRotation.x, gliderModel.transform.localRotation.y, -45), Time.deltaTime * 2f);
         }
         if (tiltAmount < 0){
             gliderModel.transform.localRotation = Quaternion.Lerp(gliderModel.transform.localRotation, Quaternion.Euler(gliderModel.transform.localRotation.x, gliderModel.transform.localRotation.y, 45f), Time.deltaTime * 2f);
         }
-#pragma warning disable RECS0018 // Comparison of floating point numbers with equality operator
         if (tiltAmount == 0)
         {
-#pragma warning restore RECS0018 // Comparison of floating point numbers with equality operator
             gliderModel.transform.localRotation = Quaternion.Lerp(gliderModel.transform.localRotation, Quaternion.Euler(gliderModel.transform.localRotation.x, gliderModel.transform.localRotation.y, 0.0f), Time.deltaTime * 2f);
         }
+
 
         //Speed management
         if (speed > maxSpeed){
