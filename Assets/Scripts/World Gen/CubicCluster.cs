@@ -50,7 +50,8 @@ public class CubicCluster: MonoBehaviour
         {   //main loop, runs through generation logic for however many blocks there are within this one piece
 
 
-            GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, Random.Range(0, 180), 0));
+            //GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, Random.Range(0, 180), 0));
+            GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, 0, 0));
             newblock.transform.localScale = CalculateScale();
             newblock.transform.parent = clusterParent.transform;
 
@@ -68,7 +69,7 @@ public class CubicCluster: MonoBehaviour
 
     private Vector3 CalculateScale() {
 
-        float y_scale = Random.Range(0.5f, 2);
+        float y_scale = Random.Range(0.2f, 2);
         float z_scale = 0;
         float x_scale = 0;
 

@@ -29,9 +29,9 @@ public class GliderController : MonoBehaviour {
     [SerializeField] float speedMultiplier;
     [SerializeField] float speedIncreaseMultiplier;
 
-    [Header("Rotation Constraints")]
-    [SerializeField] float maxPitchDown = -90f;
-    [SerializeField] float maxPitchUp = 90f;
+    [SerializeField] float AmbientSpeed = 100.0f;
+    [SerializeField] float RotationSpeed = 200.0f;
+
 
     [Header("Objects")]
     [SerializeField] Transform chaseCam;
@@ -45,7 +45,6 @@ public class GliderController : MonoBehaviour {
 	void Start () {
         speed = startSpeed;
         cameraShake.enabled = false;
-	
 	}
 	
 	// Update is called once per frame
@@ -60,55 +59,43 @@ public class GliderController : MonoBehaviour {
         chaseCam.position = chaseCam.position * cameraOffset + newCamPos*(1.0f-cameraOffset);
         chaseCam.LookAt(transform.position + transform.forward * 20.0f);
 
-        //increases the speed of the glider based off of the angle down this glider is.
-        transform.position += transform.forward * Time.deltaTime * speed * speedMultiplier;
 
-        //speed decreases if you're tipped up above 90
-        speed -= transform.forward.y * speedIncreaseMultiplier;
+        // //increases the speed of the glider based off of the angle down this glider is.
+        // transform.position += transform.forward * Time.deltaTime * speed * speedMultiplier;
 
+        // //speed decreases if you're tipped up above 90
+        // speed -= transform.forward.y * speedIncreaseMultiplier;
+        // //handles rotation of the glider based off of the input from vertical and horizontal axes
+        // transform.Rotate(Input.GetAxis("Vertical"), 0.0f, 0.0f);
+        // transform.Rotate(0.0f, Input.GetAxis("Horizontal") * horiTurnSpeed, 0.0f, Space.World);
 
-        //handles rotation of the glider based off of the input from vertical and horizontal axes
+        // float tiltAmount = Input.GetAxis("Horizontal");
+        // if (tiltAmount > 0) {
+        //     gliderModel.transform.localRotation = Quaternion.Lerp(gliderModel.transform.localRotation, Quaternion.Euler(gliderModel.transform.localRotation.x, gliderModel.transform.localRotation.y, -45), Time.deltaTime * 2f);
+        // }
+        // if (tiltAmount < 0){
+        //     gliderModel.transform.localRotation = Quaternion.Lerp(gliderModel.transform.localRotation, Quaternion.Euler(gliderModel.transform.localRotation.x, gliderModel.transform.localRotation.y, 45f), Time.deltaTime * 2f);
+        // }
+        // if (tiltAmount == 0)
+        // {
+        //     gliderModel.transform.localRotation = Quaternion.Lerp(gliderModel.transform.localRotation, Quaternion.Euler(gliderModel.transform.localRotation.x, gliderModel.transform.localRotation.y, 0.0f), Time.deltaTime * 2f);
+        // }
 
+        // //Speed management
+        // if (speed > maxSpeed){
+        //     speed = maxSpeed;
+        //     cameraShake.enabled = true;
+        // }
+        // else {
+        //     cameraShake.enabled = false;
+        // }
 
-        transform.Rotate(Input.GetAxis("Vertical"), 0.0f, 0.0f);
-        transform.Rotate(0.0f, Input.GetAxis("Horizontal") * horiTurnSpeed, 0.0f, Space.World);
-
-
-        Vector3 currentRotation = transform.localRotation.eulerAngles;
-        currentRotation.x = Mathf.Clamp(currentRotation.x, maxPitchUp, maxPitchDown);
-        transform.localRotation = Quaternion.Euler(currentRotation);
-
-
-
-
-        float tiltAmount = Input.GetAxis("Horizontal");
-        if (tiltAmount > 0) {
-            gliderModel.transform.localRotation = Quaternion.Lerp(gliderModel.transform.localRotation, Quaternion.Euler(gliderModel.transform.localRotation.x, gliderModel.transform.localRotation.y, -45), Time.deltaTime * 2f);
-        }
-        if (tiltAmount < 0){
-            gliderModel.transform.localRotation = Quaternion.Lerp(gliderModel.transform.localRotation, Quaternion.Euler(gliderModel.transform.localRotation.x, gliderModel.transform.localRotation.y, 45f), Time.deltaTime * 2f);
-        }
-        if (tiltAmount == 0)
-        {
-            gliderModel.transform.localRotation = Quaternion.Lerp(gliderModel.transform.localRotation, Quaternion.Euler(gliderModel.transform.localRotation.x, gliderModel.transform.localRotation.y, 0.0f), Time.deltaTime * 2f);
-        }
-
-
-        //Speed management
-        if (speed > maxSpeed){
-            speed = maxSpeed;
-            cameraShake.enabled = true;
-        }
-        else {
-            cameraShake.enabled = false;
-        }
-
-        if (speed <= 0){
-            //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(100f, transform.rotation.y, 0.0f), Time.deltaTime * 1f);
-        }
-        else {
-            //speed -= dragAmount;
-        }
+        // if (speed <= 0){
+        //     //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(100f, transform.rotation.y, 0.0f), Time.deltaTime * 1f);
+        // }
+        // else {
+        //     //speed -= dragAmount;
+        // }
 
 
 	}

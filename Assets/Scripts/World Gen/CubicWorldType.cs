@@ -27,7 +27,7 @@ public class CubicWorldType {
         hugeClusters = Random.Range(150, 200);
 
         
-        for (int i = 0; i <= clusterCount; i++) {
+        for (int i = 0; i <= 1; i++) {
             GameObject clusterParent = new GameObject("Cluster" + i);
             clusterParent.SetActive(false);
 
@@ -35,21 +35,21 @@ public class CubicWorldType {
             newCluster.MakeCubicCluster(clusterParent, worldBlock, Random.Range(100, 999), grassColor, rockColor);
             clusterParent.SetActive(true);
 
-        if ((hugeClusters > 0) && (Random.Range(0, 10) % 4 == 0))
-            {
-                clusterParent.transform.localScale = CalculateScale(true);
-            }
-            else {
-                clusterParent.transform.localScale = CalculateScale(false);
-            }
-            clusterParent.transform.position = CalculatePoint();
-            clusterParent.transform.parent = generatorParent.transform;
+        // if ((hugeClusters > 0) && (Random.Range(0, 10) % 4 == 0))
+        //     {
+        //         clusterParent.transform.localScale = CalculateScale(true);
+        //     }
+        //     else {
+        //         clusterParent.transform.localScale = CalculateScale(false);
+        //     }
+        //     clusterParent.transform.position = CalculatePoint();
+        //     clusterParent.transform.parent = generatorParent.transform;
         }
 
-        GenerateOutsideObjectSide(new Vector3(7000, 0, 0), grassColor, rockColor, generatorParent, worldBlock, false);
-        GenerateOutsideObjectSide(new Vector3(-7000, 0, 0), grassColor, rockColor, generatorParent, worldBlock, false);
-        GenerateOutsideObjectSide(new Vector3(0, 0, 7000), grassColor, rockColor, generatorParent, worldBlock, true);
-        GenerateOutsideObjectSide(new Vector3(0, 0, -7000), grassColor, rockColor, generatorParent, worldBlock, true);
+        // GenerateOutsideObjectSide(new Vector3(2000, 0, 0), grassColor, rockColor, generatorParent, worldBlock, false);
+        // GenerateOutsideObjectSide(new Vector3(-2000, 0, 0), grassColor, rockColor, generatorParent, worldBlock, false);
+        // GenerateOutsideObjectSide(new Vector3(0, 0, 2000), grassColor, rockColor, generatorParent, worldBlock, true);
+        // GenerateOutsideObjectSide(new Vector3(0, 0, -2000), grassColor, rockColor, generatorParent, worldBlock, true);
 
     }
 
@@ -101,7 +101,7 @@ public class CubicWorldType {
      */ 
     private void GenerateOutsideObjectSide(Vector3 centerPoint, Color grassColor, Color rockColor, GameObject parent, GameObject worldBlock, bool rotate) {
         int clusterNumber = Random.Range(5, 10);
-        int clusterSize = 60;
+        int clusterSize = 20;
         GameObject outsideClusterParent = new GameObject("OutsideBlocks");
 
         for (int i = 0; i <= clusterNumber; i++) {
