@@ -15,6 +15,8 @@ public class PlayAreaWorldGen : MonoBehaviour
         clusterCount = Random.Range(300, 400);
         hugeClusters = Random.Range(150, 200);
 
+        Vector3 worldTypeCollection = PickWorldType();
+
         //creates all clusters here
         for (int i = 0; i <= 1; i++) {
             GameObject clusterParent = new GameObject("Cluster" + i);
