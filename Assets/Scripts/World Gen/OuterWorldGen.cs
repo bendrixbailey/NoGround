@@ -2,18 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- * This method creates an entire cubic world using CubicCluster.cs to generate the smaller pieces.
- * This method is called by WorldGenerator.cs if the cubic worldtype is selected.
- * This will generate about 30 different cubic clusters at wide scattered points around the map.
- * 
- * Map has a height of 250, width of 750. Total dimensions are always a 75x250x75 box.
- * 
- * Outside this box, there is a surrounding large box that contains the background structures. Cannot be reached by the player.
- * 
- * There can be a maximum of 50 cubic clusters and a minimum of 30. Each cubic cluster is also randomized with scale, 
- * with between 1 and 4 clusters over 5 times their size.
- */
+/// <summary>
+/// This class serves as a generator for the outside boundary islands and blocks, as well as clouds.
+/// It generates each side individually, and then positions each side at 2000 blocks away from the center, and rotates them.
+/// Given the parent object passed down to it, it creates each side and nests them inside the parent,
+/// without returning anything.
+/// </summary>
 
 public class OuterWorldGen {
 

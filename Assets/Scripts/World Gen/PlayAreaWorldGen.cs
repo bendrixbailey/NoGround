@@ -17,6 +17,8 @@ public class PlayAreaWorldGen : MonoBehaviour
 
         Vector3 worldTypeCollection = PickWorldType();
 
+
+
         //creates all clusters here
         for (int i = 0; i <= 1; i++) {
             GameObject clusterParent = new GameObject("Cluster" + i);
@@ -25,19 +27,11 @@ public class PlayAreaWorldGen : MonoBehaviour
             CubicCluster newCluster = clusterParent.AddComponent<CubicCluster>();
             newCluster.MakeCubicCluster(clusterParent, worldBlock, Random.Range(100, 999), grassColor, rockColor);
             clusterParent.SetActive(true);
-
-        // if ((hugeClusters > 0) && (Random.Range(0, 10) % 4 == 0))
-        //     {
-        //         clusterParent.transform.localScale = CalculateScale(true);
-        //     }
-        //     else {
-        //         clusterParent.transform.localScale = CalculateScale(false);
-        //     }
-        //     clusterParent.transform.position = CalculatePoint();
-        //     clusterParent.transform.parent = generatorParent.transform;
         }
 
     }
+
+    private GameObject CreateGameArea
 
     /*
      * This method is used to generate a random point at which the cluster of blocks will be placed.

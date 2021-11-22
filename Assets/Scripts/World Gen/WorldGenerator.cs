@@ -53,14 +53,14 @@ public class WorldGenerator : MonoBehaviour
 
         Random.InitState(seed);
 
-        Color grass_color = Random.ColorHSV(0.19f, 0.44f, 0.3f, 1f, 0.2f, 0.4f);
-        Color rock_color = Random.ColorHSV(0.5f, 1f, 0.3f, 1f, 0.3f, 0.5f);
+        grassColor = Random.ColorHSV(0.19f, 0.44f, 0.3f, 1f, 0.2f, 0.4f);
+        rockColor = Random.ColorHSV(0.5f, 1f, 0.3f, 1f, 0.3f, 0.5f);
 
 
         //Attempted implementation of view distance fog, unity fog is crappy,
         //need to write own fog scripts
-        //RenderSettings.fog = true;
-        // RenderSettings.fogColor = Random.ColorHSV(0.5f, 0.1f, 0.1f, 0.25f, 0.8f, 1f);
+        RenderSettings.fog = true;
+        RenderSettings.fogColor = rock_color;
 
         GenerateClouds();
 

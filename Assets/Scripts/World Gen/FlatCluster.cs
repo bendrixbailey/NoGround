@@ -1,24 +1,19 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
- * This class generates a cubic looking structure randomized by a seed. Used by Test_World_Gen.cs.
- * Uses a predetermined randomized seed given by the worldgen class to seed the random variables to be repeatable.
- * 
- * Changes the colors of the block based off seed. Keeps the colors within a reasonable range so we dont get pitch black or 
- * bright white or neon colors.
- */
 
-public class CubicCluster: Cluster
+public class FlatCluster: Cluster 
 {
-
     private int block_count;
     private Vector3 origin_point;
     private float max_origin_offset;
     private GameObject block;
     private GameObject clusterParent;
 
-    private List<GameObject> cubes;
+    //Since this is a flat cluster, the minimum and max will be smaller than usual, and closer together
+    private float minScale;
+    private int maxScale;
+
     
 
     /*
@@ -31,9 +26,9 @@ public class CubicCluster: Cluster
 
         Material[] materials = worldBlock.GetComponent<MeshRenderer>().sharedMaterials;
         block = worldBlock;
+        clusterParent = parent;
         materials[1].color = top_color;
         materials[0].color = body_color;
-        clusterParent = parent;
 
         block_count = Random.Range(2, 8);
 
@@ -51,17 +46,17 @@ public class CubicCluster: Cluster
 
 
             //GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, Random.Range(0, 180), 0));
+            //Block is created
             GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, 0, 0));
+
+            //small detail is added to each block randomly
+            
+            
+            //block is stretched/scaled
             newblock.transform.localScale = CalculateScale();
+
+            //block is moved to final place in cluster
             newblock.transform.parent = clusterParent.transform;
 
         }
-
-
-    }
-
-
-
-    
-
-	
+}
