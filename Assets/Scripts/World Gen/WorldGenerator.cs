@@ -67,6 +67,7 @@ public class WorldGenerator : MonoBehaviour
         //if (seed % 2 == 0) {
         //Generates a new world type with a cubic layout.
         //More worldtypes will be implemented here, and it will be randomly chosen based off the seeed
+        new PlayAreaWorldGen(worldBlock, seed, grassColor, rockColor);
         //var unused = new CubicWorldType(new GameObject("Landscape"), worldBlock, seed, grass_color, rock_color);
         //}
 

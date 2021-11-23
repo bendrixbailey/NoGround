@@ -11,37 +11,37 @@ using UnityEngine;
 
 public class OuterWorldGen {
 
-    /**
-     * This method creates one side of the 4 sided field of massive asthetic objects just outside the 
-     * view field.
-     */ 
-    private void GenerateOutsideObjectSide(Vector3 centerPoint, Color grassColor, Color rockColor, GameObject parent, GameObject worldBlock, bool rotate) {
-        int clusterNumber = Random.Range(5, 10);
-        int clusterSize = 20;
-        GameObject outsideClusterParent = new GameObject("OutsideBlocks");
+    // /**
+    //  * This method creates one side of the 4 sided field of massive asthetic objects just outside the 
+    //  * view field.
+    //  */ 
+    // private void GenerateOutsideObjectSide(Vector3 centerPoint, Color grassColor, Color rockColor, GameObject parent, GameObject worldBlock, bool rotate) {
+    //     int clusterNumber = Random.Range(5, 10);
+    //     int clusterSize = 20;
+    //     GameObject outsideClusterParent = new GameObject("OutsideBlocks");
 
-        for (int i = 0; i <= clusterNumber; i++) {
-            GameObject clusterParent = new GameObject("Cluster" + i);
+    //     for (int i = 0; i <= clusterNumber; i++) {
+    //         GameObject clusterParent = new GameObject("Cluster" + i);
 
 
-            CubicCluster newCluster = clusterParent.AddComponent<CubicCluster>();
-            newCluster.MakeCubicCluster(clusterParent, worldBlock, Random.Range(100, 999), grassColor, rockColor);
+    //         CubicCluster newCluster = clusterParent.AddComponent<CubicCluster>();
+    //         newCluster.MakeCubicCluster(clusterParent, worldBlock, Random.Range(100, 999), grassColor, rockColor);
 
-            newCluster.transform.localScale = new Vector3(clusterSize, clusterSize, clusterSize);
+    //         newCluster.transform.localScale = new Vector3(clusterSize, clusterSize, clusterSize);
 
-            clusterParent.transform.SetParent(outsideClusterParent.transform);
+    //         clusterParent.transform.SetParent(outsideClusterParent.transform);
 
            
-        }
-        outsideClusterParent.transform.localScale = new Vector3(15, 15, 30);
-        outsideClusterParent.transform.position = centerPoint;
+    //     }
+    //     outsideClusterParent.transform.localScale = new Vector3(15, 15, 30);
+    //     outsideClusterParent.transform.position = centerPoint;
 
-        if (rotate)
-        {
-            outsideClusterParent.transform.Rotate(new Vector3(0,90,0));
-        }
+    //     if (rotate)
+    //     {
+    //         outsideClusterParent.transform.Rotate(new Vector3(0,90,0));
+    //     }
 
-        outsideClusterParent.transform.SetParent(parent.transform);
+    //     outsideClusterParent.transform.SetParent(parent.transform);
 
-    }
+    // }
 }

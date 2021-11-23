@@ -20,15 +20,16 @@ public class PlayAreaWorldGen : MonoBehaviour
 
 
         //creates all clusters here
-        for (int i = 0; i <= 1; i++) {
+        for (int i = 0; i < 1; i++) {
             GameObject clusterParent = new GameObject("Cluster" + i);
             clusterParent.SetActive(false);
 
+            Vector3 tempLoc = new Vector3(0, 0, 0);
+
             CubicCluster newCluster = clusterParent.AddComponent<CubicCluster>();
-            newCluster.MakeCubicCluster(clusterParent, worldBlock, Random.Range(100, 999), grassColor, rockColor);
+            newCluster.MakeCubicCluster(clusterParent, worldBlock, Random.Range(100, 999), grassColor, rockColor, tempLoc);
             clusterParent.SetActive(true);
         }
-
     }
 
 

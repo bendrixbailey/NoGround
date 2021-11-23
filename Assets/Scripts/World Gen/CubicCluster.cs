@@ -27,15 +27,16 @@ public class CubicCluster: Cluster
      * determined by the cubic world generator.
      * 
      */
-    public void MakeCubicCluster(GameObject parent, GameObject worldBlock, int seed, Color top_color, Color body_color) { 
+    public void MakeCubicCluster(GameObject parent, GameObject worldBlock, int seed, Color top_color, Color body_color, Vector3 origin_point) { 
 
         Material[] materials = worldBlock.GetComponent<MeshRenderer>().sharedMaterials;
         block = worldBlock;
+        this.origin_point = origin_point;
         materials[1].color = top_color;
         materials[0].color = body_color;
         clusterParent = parent;
 
-        block_count = Random.Range(2, 8);
+        block_count = Random.Range(4, 10);
 
         if (block_count > 6)
         {
@@ -46,14 +47,16 @@ public class CubicCluster: Cluster
         }
 
 
-        for (int i = 0; i <= block_count; i++)
+        for (int i = 0; i < block_count; i++)
         {   //main loop, runs through generation logic for however many blocks there are within this one piece
 
 
             //GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, Random.Range(0, 180), 0));
             GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, 0, 0));
+            //GameObject newblock = Instantiate(block, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0));
+            //newblock.transform.position = CalculatePoint(origin_point, max_origin_offset);
             AddSurfaceDetail(newblock, block, 0, 0);
-            newblock.transform.localScale = CalculateScale(1f, 3);
+            newblock.transform.localScale = CalculateScale(1f, 2);
             newblock.transform.parent = clusterParent.transform;
 
         }
