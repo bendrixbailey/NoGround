@@ -52,13 +52,15 @@ public class CubicCluster: Cluster
 
             //GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, Random.Range(0, 180), 0));
             GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, 0, 0));
-            newblock.transform.localScale = CalculateScale();
+            AddSurfaceDetail(newblock, block, 0, 0);
+            newblock.transform.localScale = CalculateScale(1f, 3);
             newblock.transform.parent = clusterParent.transform;
 
         }
 
 
     }
+}
 
 
 

@@ -53,10 +53,11 @@ public class FlatCluster: Cluster
             
             
             //block is stretched/scaled
-            newblock.transform.localScale = CalculateScale();
+            newblock.transform.localScale = CalculateScale(0.1f, 1);
 
             //block is moved to final place in cluster
             newblock.transform.parent = clusterParent.transform;
 
         }
+    }
 }

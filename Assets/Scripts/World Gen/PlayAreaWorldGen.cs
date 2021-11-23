@@ -31,7 +31,6 @@ public class PlayAreaWorldGen : MonoBehaviour
 
     }
 
-    private GameObject CreateGameArea
 
     /*
      * This method is used to generate a random point at which the cluster of blocks will be placed.

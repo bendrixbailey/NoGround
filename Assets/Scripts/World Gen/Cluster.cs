@@ -9,7 +9,7 @@ public abstract class Cluster : MonoBehaviour
      * get weird lookin blocks that are super thin but extremely tall. Basically just a more in depth scale randomized function.
      */
 
-    private Vector3 CalculateScale(float minScale, int maxScale) {
+    protected Vector3 CalculateScale(float minScale, int maxScale) {
 
         float y_scale = Random.Range(0.2f, 2);
         float z_scale = 0;
@@ -39,7 +39,7 @@ public abstract class Cluster : MonoBehaviour
      * 
      * Returns vector3 of random point within bounds.
      */
-    private Vector3 CalculatePoint(Vector3 origin, float deviation)
+    protected Vector3 CalculatePoint(Vector3 origin, float deviation)
     {
         //creates a bottom point so that the random point will be within
         float x_offset = Random.Range(-deviation, deviation);
@@ -59,12 +59,12 @@ public abstract class Cluster : MonoBehaviour
     /// <param name="parentBlock"> This is the parent block the little detail blocks will be put on</param>
     /// <param name="block">detail block prefab to create from</param>
     /// <returns></returns>
-    private void AddSurfaceDetail(GameObject parentBlock, GameObject block, float maxSize, float minSize){
+    protected void AddSurfaceDetail(GameObject parentBlock, GameObject block, float maxSize, float minSize){
         maxSize = 0.3f;
         minSize = 0.05f;
 
         //cache these values so multiple calls to GetRandomPointOnMesh doesnt kill the generation
-        Mesh mesh = parentBlock.GetComponent<MeshCollider>.sharedMesh;
+        Mesh mesh = parentBlock.GetComponent<MeshCollider>().sharedMesh;
         float[] sizes = GetTriSizes(mesh.triangles, mesh.vertices);
         float[] cumulativeSizes = new float[sizes.Length];
         float total = 0;
@@ -79,7 +79,14 @@ public abstract class Cluster : MonoBehaviour
 
         for(int i = 0; i < numDetailBlocks; i ++){
             //create new clone of block on surface somewhere, set its rotation, and set parent
-            Instantiate(block, GenerateRandomPointOnMesh(sizes, cumulativeSizes, total), Quaternion.Euler(-90, 0, 0), parentBlock.transform);
+            GameObject tempBlock = Instantiate(block, GetRandomPointOnMesh(sizes, cumulativeSizes, total, mesh), Quaternion.Euler(-90, 0, 0));
+            //randomize all scales within the given scale modifiers
+            float blocksize = Random.Range(minSize, maxSize);
+            //make dimensions not square, but slightly vary them within the randomly specified range
+            tempBlock.transform.localScale = new Vector3(Random.Range(blocksize - (blocksize * 0.25f), blocksize + (blocksize * 0.25f)), 
+                                                         Random.Range(blocksize - (blocksize * 0.25f), blocksize + (blocksize * 0.25f)), 
+                                                         Random.Range(blocksize - (blocksize * 0.25f), blocksize + (blocksize * 0.25f)));
+            tempBlock.transform.parent = parentBlock.transform;
         }
 
     }
@@ -94,7 +101,7 @@ public abstract class Cluster : MonoBehaviour
     /// <param name="cumulativeSizes">cached cumulative sizes array</param>
     /// <param name="total">cached total count</param>
     /// <returns></returns>
-    private Vector3 GetRandomPointOnMesh(float[] sizes, float[] cumulativeSizes, float total)
+    private Vector3 GetRandomPointOnMesh(float[] sizes, float[] cumulativeSizes, float total, Mesh mesh)
     {
         //if you're repeatedly doing this on a single mesh, you'll likely want to cache cumulativeSizes and total
 

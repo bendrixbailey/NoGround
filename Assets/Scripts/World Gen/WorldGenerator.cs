@@ -60,7 +60,7 @@ public class WorldGenerator : MonoBehaviour
         //Attempted implementation of view distance fog, unity fog is crappy,
         //need to write own fog scripts
         RenderSettings.fog = true;
-        RenderSettings.fogColor = rock_color;
+        RenderSettings.fogColor = rockColor;
 
         GenerateClouds();
 
