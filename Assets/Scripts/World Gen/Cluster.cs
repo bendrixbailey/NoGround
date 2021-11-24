@@ -12,20 +12,34 @@ public abstract class Cluster : MonoBehaviour
     /// <param name="minScale"></param>
     /// <param name="maxScale"></param>
     /// <returns></returns>
-    protected Vector3 CalculateScale(float minScale, int maxScale) {
+    protected Vector3 CalculateScale(float minScale, int maxScale, WorldType.Type type) {
 
-        float y_scale = Random.Range(minScale, maxScale);
-        float z_scale = 0;
-        float x_scale = 0;
 
-        if (y_scale >= 1)
-        {
+
+        float y_scale = 0f;
+        float z_scale = 0f;
+        float x_scale = 0f;
+
+        if(type == WorldType.Type.Cube){                      //if difference is less than 2, its cubic world type
+            y_scale = Random.Range(minScale, maxScale);     //all will be close in range, might be more tall/flat but
+            z_scale = Random.Range(minScale, maxScale);     //will be close regardless
             x_scale = Random.Range(minScale, maxScale);
-            z_scale = Random.Range(minScale, maxScale);
         }
-        else {
-            x_scale = Random.Range(minScale, maxScale);
-            z_scale = Random.Range(minScale, maxScale);
+
+
+        if(type == WorldType.Type.Flat){                                //if min is small, we know we want flat world type
+            z_scale = Random.Range(minScale, minScale * 3);
+            y_scale = Random.Range(maxScale/3, maxScale);   //recalc z and x to be atleast 3* as large
+            x_scale = Random.Range(maxScale/3, maxScale);
+        }
+
+        if(type == WorldType.Type.Tall){     //if max is greater than 4* min scale its tall world type
+            // if(maxScale/4 < minScale){
+            //     maxScale = Mathf.RoundToInt(4* minScale) + 1;
+            // }
+            z_scale = Random.Range(maxScale - 1, maxScale);   //make sure Y is always greater than either z or x
+            y_scale = Random.Range(minScale, minScale + 0.5f);   //recalc z and x to at most be 1/3 the size 
+            x_scale = Random.Range(minScale, minScale + 0.5f);
         }
 
 

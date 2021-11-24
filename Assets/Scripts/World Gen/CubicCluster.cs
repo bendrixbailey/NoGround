@@ -56,12 +56,10 @@ public class CubicCluster: Cluster
             //GameObject newblock = Instantiate(block, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0));
             //newblock.transform.position = CalculatePoint(origin_point, max_origin_offset);
             AddSurfaceDetail(newblock, block, 0, 0);
-            newblock.transform.localScale = CalculateScale(1f, 2);
+            newblock.transform.localScale = CalculateScale(2f, 3, WorldType.Type.Cube);
             newblock.transform.parent = clusterParent.transform;
 
         }
-
-
     }
 }
 
