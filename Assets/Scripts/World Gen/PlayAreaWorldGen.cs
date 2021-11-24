@@ -2,40 +2,93 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayAreaWorldGen : MonoBehaviour
+public class PlayAreaWorldGen
 {
     private int clusterCount;
     private int hugeClusters;
     private int massiveClusters;
 
+    private GameObject tempCluster = new GameObject("Cluster");
+
     private GameObject PlayAreaParent = new GameObject("PlayArea");
 
+    private GameObject worldBlock;
+    private int seed;
+    private Color grassColor;
+    private Color rockColor;
+
+    private int worldTypeTracker = 1;
+
     public PlayAreaWorldGen(GameObject worldBlock, int seed, Color grassColor, Color rockColor) {
+
+        this.worldBlock = worldBlock;
+        this.seed = seed;
+        this.grassColor = grassColor;
+        this.rockColor = rockColor;
 
         clusterCount = Random.Range(300, 400);
         hugeClusters = Random.Range(150, 200);
 
+        Vector3 worldTypeCollection = PickWorldType();
+
+
+
         //creates all clusters here
-        for (int i = 0; i <= 1; i++) {
-            GameObject clusterParent = new GameObject("Cluster" + i);
-            clusterParent.SetActive(false);
+        for (int i = 0; i < 1; i++) {
+            // GameObject clusterParent = new GameObject("Cluster" + i);
+            // clusterParent.SetActive(false);
 
-            CubicCluster newCluster = clusterParent.AddComponent<CubicCluster>();
-            newCluster.MakeCubicCluster(clusterParent, worldBlock, Random.Range(100, 999), grassColor, rockColor);
-            clusterParent.SetActive(true);
+            Vector3 tempLoc = new Vector3(0, 0, 0);
 
-        // if ((hugeClusters > 0) && (Random.Range(0, 10) % 4 == 0))
-        //     {
-        //         clusterParent.transform.localScale = CalculateScale(true);
-        //     }
-        //     else {
-        //         clusterParent.transform.localScale = CalculateScale(false);
-        //     }
-        //     clusterParent.transform.position = CalculatePoint();
-        //     clusterParent.transform.parent = generatorParent.transform;
+            CubicCluster newCluster = tempCluster.AddComponent<CubicCluster>();
+            newCluster.MakeCubicCluster(tempCluster, worldBlock, Random.Range(100, 999), grassColor, rockColor, tempLoc);
+            //clusterParent.SetActive(true);
+
+            // FlatCluster newFlatCluster = clusterParent.AddComponent<FlatCluster>();
+            // newFlatCluster.MakeFlatCluster(clusterParent, worldBlock, Random.Range(100, 999), grassColor, rockColor, tempLoc);
+            // clusterParent.SetActive(true);
+
+            // TallCluster newCluster = clusterParent.AddComponent<TallCluster>();
+            // newCluster.MakeTallCluster(clusterParent, worldBlock, Random.Range(100, 999), grassColor, rockColor, tempLoc);
+            // clusterParent.SetActive(true);
         }
-
     }
+
+    public void UpdateBlockTypeSelected(int type){
+        switch(type){
+            case 1:
+                if(worldTypeTracker != 1){
+                    foreach (Transform child in tempCluster.transform) {
+                        GameObject.Destroy(child.gameObject);
+                    }
+                    CubicCluster newCluster = tempCluster.AddComponent<CubicCluster>();
+                    newCluster.MakeCubicCluster(tempCluster, worldBlock, Random.Range(100, 999), grassColor, rockColor, new Vector3(0, 0, 0));
+                    worldTypeTracker = 1;
+                }
+                break;
+            case 2:
+                if(worldTypeTracker != 2){
+                    foreach (Transform child in tempCluster.transform) {
+                        GameObject.Destroy(child.gameObject);
+                    }
+                    FlatCluster newFlatCluster = tempCluster.AddComponent<FlatCluster>();
+                    newFlatCluster.MakeFlatCluster(tempCluster, worldBlock, Random.Range(100, 999), grassColor, rockColor, new Vector3(0, 0, 0));
+                    worldTypeTracker = 2;
+                }
+                break;
+            case 3:
+                if(worldTypeTracker != 3){
+                    foreach (Transform child in tempCluster.transform) {
+                        GameObject.Destroy(child.gameObject);
+                    }
+                    TallCluster newTallCluster = tempCluster.AddComponent<TallCluster>();
+                    newTallCluster.MakeTallCluster(tempCluster, worldBlock, Random.Range(100, 999), grassColor, rockColor, new Vector3(0, 0, 0));
+                    worldTypeTracker = 3;
+                }
+                break;
+        }
+    }
+
 
     /*
      * This method is used to generate a random point at which the cluster of blocks will be placed.

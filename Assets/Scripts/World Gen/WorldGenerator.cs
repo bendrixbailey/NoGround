@@ -34,10 +34,18 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private GameObject[] smallClouds;
     [SerializeField] private GameObject[] wispyClouds;
 
+    [Header("Cluster Type Switch")]
+    [SerializeField] private bool cubicCluster = true;
+    [SerializeField] private bool flatCluster;
+    [SerializeField] private bool tallCluster;
+
+
 
     private Color cloudColor;
     private Color grassColor;
     private Color rockColor;
+
+    private PlayAreaWorldGen playAreaWorldGen;
 
 
     /*
@@ -53,23 +61,39 @@ public class WorldGenerator : MonoBehaviour
 
         Random.InitState(seed);
 
-        Color grass_color = Random.ColorHSV(0.19f, 0.44f, 0.3f, 1f, 0.2f, 0.4f);
-        Color rock_color = Random.ColorHSV(0.5f, 1f, 0.3f, 1f, 0.3f, 0.5f);
+        grassColor = Random.ColorHSV(0.19f, 0.44f, 0.3f, 1f, 0.2f, 0.4f);
+        rockColor = Random.ColorHSV(0.5f, 1f, 0.3f, 1f, 0.3f, 0.5f);
 
 
         //Attempted implementation of view distance fog, unity fog is crappy,
         //need to write own fog scripts
-        //RenderSettings.fog = true;
-        // RenderSettings.fogColor = Random.ColorHSV(0.5f, 0.1f, 0.1f, 0.25f, 0.8f, 1f);
+        RenderSettings.fog = true;
+        RenderSettings.fogColor = rockColor;
 
         GenerateClouds();
 
         //if (seed % 2 == 0) {
         //Generates a new world type with a cubic layout.
         //More worldtypes will be implemented here, and it will be randomly chosen based off the seeed
+        playAreaWorldGen = new PlayAreaWorldGen(worldBlock, seed, grassColor, rockColor);
         //var unused = new CubicWorldType(new GameObject("Landscape"), worldBlock, seed, grass_color, rock_color);
         //}
 
+    }
+
+    void Update(){
+        if(cubicCluster){
+            playAreaWorldGen.UpdateBlockTypeSelected(1);
+            cubicCluster = false;
+        }
+        if(flatCluster){
+            playAreaWorldGen.UpdateBlockTypeSelected(2);
+            flatCluster = false;
+        }
+        if(tallCluster){
+            playAreaWorldGen.UpdateBlockTypeSelected(3);
+            tallCluster = false;
+        }
     }
 
     /*

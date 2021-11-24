@@ -9,7 +9,7 @@ using UnityEngine;
  * bright white or neon colors.
  */
 
-public class CubicCluster: MonoBehaviour
+public class CubicCluster: Cluster
 {
 
     private int block_count;
@@ -27,15 +27,16 @@ public class CubicCluster: MonoBehaviour
      * determined by the cubic world generator.
      * 
      */
-    public void MakeCubicCluster(GameObject parent, GameObject worldBlock, int seed, Color top_color, Color body_color) { 
+    public void MakeCubicCluster(GameObject parent, GameObject worldBlock, int seed, Color top_color, Color body_color, Vector3 origin_point) { 
 
         Material[] materials = worldBlock.GetComponent<MeshRenderer>().sharedMaterials;
         block = worldBlock;
+        this.origin_point = origin_point;
         materials[1].color = top_color;
         materials[0].color = body_color;
         clusterParent = parent;
 
-        block_count = Random.Range(2, 8);
+        block_count = Random.Range(4, 10);
 
         if (block_count > 6)
         {
@@ -46,66 +47,24 @@ public class CubicCluster: MonoBehaviour
         }
 
 
-        for (int i = 0; i <= block_count; i++)
+        for (int i = 0; i < block_count; i++)
         {   //main loop, runs through generation logic for however many blocks there are within this one piece
 
 
             //GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, Random.Range(0, 180), 0));
             GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, 0, 0));
-            newblock.transform.localScale = CalculateScale();
+            //GameObject newblock = Instantiate(block, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0));
+            //newblock.transform.position = CalculatePoint(origin_point, max_origin_offset);
+            AddSurfaceDetail(newblock, block, 0, 0);
+            newblock.transform.localScale = CalculateScale(2f, 3, WorldType.Type.Cube);
             newblock.transform.parent = clusterParent.transform;
 
         }
-
-
-    }
-
-
-
-    /*
-     * This method calculates the scale of the certain block. This is done in a separate function so we dont
-     * get weird lookin blocks that are super thin but extremely tall. Basically just a more in depth scale randomized function.
-     */
-
-    private Vector3 CalculateScale() {
-
-        float y_scale = Random.Range(0.2f, 2);
-        float z_scale = 0;
-        float x_scale = 0;
-
-        if (y_scale >= 1)
-        {
-            x_scale = Random.Range(0.5f, 2);
-            z_scale = Random.Range(0.5f, 2);
-        }
-        else {
-            x_scale = Random.Range(2, 3);
-            z_scale = Random.Range(2, 3);
-        }
-
-
-
-        return new Vector3(x_scale, y_scale, z_scale);
-    }
-
-    /*
-     * This method creates a random point within the given deviation from the offset.
-     * Works by finding the bottom left point, uses mathf.abs so it works with negative and positive directions.
-     * Then it calculates a random value within that bottom point and 2 * deviation, and then divides it by two, and 
-     * adds or subtracts it from the origin. This value is the new x, y, or z value of the new vector3. Once all are done,
-     * the new Vector3 is returned.
-     * 
-     * Returns vector3 of random point within bounds.
-     */
-    private Vector3 CalculatePoint(Vector3 origin, float deviation)
-    {
-        //creates a bottom point so that the random point will be within
-        float x_offset = Random.Range(-deviation, deviation);
-        float y_offset = Random.Range(-deviation, deviation);
-        float z_offset = Random.Range(-deviation, deviation);
-
-        return new Vector3(origin.x + x_offset, origin.y + y_offset, origin.z + z_offset);
     }
 }
+
+
+
+    
 
 	
