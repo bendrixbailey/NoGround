@@ -23,6 +23,7 @@ public class TallCluster: Cluster
 
         Material[] materials = worldBlock.GetComponent<MeshRenderer>().sharedMaterials;
         block = worldBlock;
+        //Random.InitState(seed);
         this.origin_point = origin_point;
         materials[1].color = top_color;
         materials[0].color = body_color;

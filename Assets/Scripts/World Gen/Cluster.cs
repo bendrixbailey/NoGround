@@ -93,6 +93,10 @@ public abstract class Cluster : MonoBehaviour
             cumulativeSizes[i] = total;
         }
 
+        Debug.Log("sizes: " + sizes);
+        Debug.Log("cumSize: " + cumulativeSizes);
+        Debug.Log("total: " + total);
+
 
         int numDetailBlocks = Random.Range(5, 15);
 
@@ -106,9 +110,33 @@ public abstract class Cluster : MonoBehaviour
                                                          Random.Range(blocksize - (blocksize * 0.25f), blocksize + (blocksize * 0.25f)), 
                                                          Random.Range(blocksize - (blocksize * 0.25f), blocksize + (blocksize * 0.25f)));
 
-            tempBlock.transform.localPosition = GetRandomPointOnMesh(sizes, cumulativeSizes, total, mesh);
+            //tempBlock.transform.localPosition = GetRandomPointOnMesh(sizes, cumulativeSizes, total, mesh);
+            tempBlock.transform.localPosition = GetRandomPointOnCube(1.15f, blocksize);
         }
     }
+
+    private Vector3 GetRandomPointOnCube(float parentWidth, float blockSize){
+        float width = parentWidth - (blockSize * 0.2f);
+        float hw = parentWidth * 0.5f;
+        int side = Random.Range(0, 6);
+        switch(side){
+            case 0:
+                return new Vector3(-width, Random.Range(-hw, hw), Random.Range(-hw, hw));
+            case 1:
+                return new Vector3(width, Random.Range(-hw, hw), Random.Range(-hw, hw));
+            case 2:
+                return new Vector3(Random.Range(-hw, hw), -width, Random.Range(-hw, hw));
+            case 3:
+                return new Vector3(Random.Range(-hw, hw), width, Random.Range(-hw, hw));
+            case 4:
+                return new Vector3(Random.Range(-hw, hw), Random.Range(-hw, hw), -(width - 0.2f));
+            case 5:
+                return new Vector3(Random.Range(-hw, hw), Random.Range(-hw, hw), (width - 0.2f));
+            default:
+                return new Vector3(0, 0, 0);
+        }
+    }
+
 
     /// <summary>
     /// This function was borrowed from https://gist.github.com/v21/5378391. It generates a random point 

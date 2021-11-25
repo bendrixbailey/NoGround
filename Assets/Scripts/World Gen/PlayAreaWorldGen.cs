@@ -16,42 +16,29 @@ public class PlayAreaWorldGen
     private int seed;
     private Color grassColor;
     private Color rockColor;
+    private Vector3 worldTypeCollection;    //x=cubes, y=flats, z=talls
 
     private int worldTypeTracker = 1;
 
+    /// <summary>
+    /// Constructor for the Play area world gen. 
+    /// </summary>
+    /// <param name="worldBlock"></param>
+    /// <param name="seed"></param>
+    /// <param name="grassColor"></param>
+    /// <param name="rockColor"></param>
     public PlayAreaWorldGen(GameObject worldBlock, int seed, Color grassColor, Color rockColor) {
 
         this.worldBlock = worldBlock;
         this.seed = seed;
         this.grassColor = grassColor;
         this.rockColor = rockColor;
+        //Random.InitState(seed);
 
         clusterCount = Random.Range(300, 400);
         hugeClusters = Random.Range(150, 200);
 
-        Vector3 worldTypeCollection = PickWorldType();
-
-
-
-        //creates all clusters here
-        for (int i = 0; i < 1; i++) {
-            // GameObject clusterParent = new GameObject("Cluster" + i);
-            // clusterParent.SetActive(false);
-
-            Vector3 tempLoc = new Vector3(0, 0, 0);
-
-            CubicCluster newCluster = tempCluster.AddComponent<CubicCluster>();
-            newCluster.MakeCubicCluster(tempCluster, worldBlock, Random.Range(100, 999), grassColor, rockColor, tempLoc);
-            //clusterParent.SetActive(true);
-
-            // FlatCluster newFlatCluster = clusterParent.AddComponent<FlatCluster>();
-            // newFlatCluster.MakeFlatCluster(clusterParent, worldBlock, Random.Range(100, 999), grassColor, rockColor, tempLoc);
-            // clusterParent.SetActive(true);
-
-            // TallCluster newCluster = clusterParent.AddComponent<TallCluster>();
-            // newCluster.MakeTallCluster(clusterParent, worldBlock, Random.Range(100, 999), grassColor, rockColor, tempLoc);
-            // clusterParent.SetActive(true);
-        }
+        this.worldTypeCollection = PickWorldType();
     }
 
     public void UpdateBlockTypeSelected(int type){
@@ -89,6 +76,32 @@ public class PlayAreaWorldGen
         }
     }
 
+    public void CreateWorld(){
+        int cubes = Mathf.RoundToInt(this.worldTypeCollection.x);
+        int flat = Mathf.RoundToInt(this.worldTypeCollection.y);
+        int tall = Mathf.RoundToInt(this.worldTypeCollection.z);
+
+        for(int i = 0; i < cubes; i++){
+            GameObject newCluster = new GameObject("CubeCluster" + i);
+            newCluster.transform.parent = PlayAreaParent.transform;
+            CubicCluster cubeCluster = newCluster.AddComponent<CubicCluster>();
+            cubeCluster.MakeCubicCluster(newCluster, worldBlock, seed, grassColor, rockColor, CalculatePoint());
+            
+        }
+        for(int j = 0; j < flat; j++){
+            GameObject newCluster = new GameObject("FlatCluster" + j);
+            newCluster.transform.parent = PlayAreaParent.transform;
+            FlatCluster flatCluster = newCluster.AddComponent<FlatCluster>();
+            flatCluster.MakeFlatCluster(newCluster, worldBlock, seed, grassColor, rockColor, CalculatePoint());
+        }
+        for(int k = 0; k < tall; k++){
+            GameObject newCluster = new GameObject("TallCluster" + k);
+            newCluster.transform.parent = PlayAreaParent.transform;
+            TallCluster tallCluster = newCluster.AddComponent<TallCluster>();
+            tallCluster.MakeTallCluster(newCluster, worldBlock, seed, grassColor, rockColor, CalculatePoint());
+        }
+    }
+
 
     /*
      * This method is used to generate a random point at which the cluster of blocks will be placed.
@@ -97,9 +110,9 @@ public class PlayAreaWorldGen
     private Vector3 CalculatePoint() {
         //dimentions: 300x900x300 (x,y,z)
 
-        float x_point = Random.Range(-340, 340);
-        float y_point = Random.Range(10, 890);
-        float z_point = Random.Range(-340, 340);
+        int x_point = Random.Range(-340, 340);
+        int y_point = Random.Range(10, 890);
+        int z_point = Random.Range(-340, 340);
 
 
         return new Vector3(x_point, y_point, z_point);
@@ -112,9 +125,9 @@ public class PlayAreaWorldGen
     private Vector3 CalculateScale(bool huge)
     {
 
-        float y_scale;
-        float x_scale;
-        float z_scale;
+        int y_scale;
+        int x_scale;
+        int z_scale;
 
         if (huge)
         {
@@ -143,11 +156,11 @@ public class PlayAreaWorldGen
         int res = Random.Range(0, 3);
         switch(res){
             case 1:
-                return new Vector3(80, 10, 10);
+                return new Vector3(80, 10, 10);     //cubic world type
             case 2: 
-                return new Vector3(10, 80, 10);
+                return new Vector3(10, 80, 10);     //flat world type
             case 3:
-                return new Vector3(10, 10, 80);
+                return new Vector3(10, 10, 80);     //tall world type
             default:
                 return new Vector3 (0, 0, 0);
         }
