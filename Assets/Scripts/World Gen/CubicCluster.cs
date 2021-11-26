@@ -27,11 +27,12 @@ public class CubicCluster: Cluster
      * determined by the cubic world generator.
      * 
      */
-    public void MakeCubicCluster(GameObject parent, GameObject worldBlock, int seed, Color top_color, Color body_color, Vector3 origin_point) { 
+    public void MakeCubicCluster(GameObject parent, GameObject worldBlock, int seed, Color top_color, Color body_color) { 
 
         Material[] materials = worldBlock.GetComponent<MeshRenderer>().sharedMaterials;
         block = worldBlock;
-        this.origin_point = origin_point;
+        //Random.InitState(seed);
+        this.origin_point = new Vector3(0, 0, 0);
         materials[1].color = top_color;
         materials[0].color = body_color;
         clusterParent = parent;
@@ -56,8 +57,8 @@ public class CubicCluster: Cluster
             //GameObject newblock = Instantiate(block, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0));
             //newblock.transform.position = CalculatePoint(origin_point, max_origin_offset);
             AddSurfaceDetail(newblock, block, 0, 0);
-            newblock.transform.localScale = CalculateScale(2f, 3, WorldType.Type.Cube);
-            newblock.transform.parent = clusterParent.transform;
+            newblock.transform.localScale = CalculateScale(1f, 2, WorldType.Type.Cube);
+            newblock.transform.SetParent(clusterParent.transform);
 
         }
     }

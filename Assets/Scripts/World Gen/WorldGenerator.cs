@@ -34,10 +34,10 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private GameObject[] smallClouds;
     [SerializeField] private GameObject[] wispyClouds;
 
-    [Header("Cluster Type Switch")]
-    [SerializeField] private bool cubicCluster = true;
-    [SerializeField] private bool flatCluster;
-    [SerializeField] private bool tallCluster;
+    // [Header("Cluster Type Switch")]
+    // [SerializeField] private bool cubicCluster = true;
+    // [SerializeField] private bool flatCluster;
+    // [SerializeField] private bool tallCluster;
 
 
 
@@ -76,25 +76,27 @@ public class WorldGenerator : MonoBehaviour
         //Generates a new world type with a cubic layout.
         //More worldtypes will be implemented here, and it will be randomly chosen based off the seeed
         playAreaWorldGen = new PlayAreaWorldGen(worldBlock, seed, grassColor, rockColor);
+
+        playAreaWorldGen.CreateWorld();
         //var unused = new CubicWorldType(new GameObject("Landscape"), worldBlock, seed, grass_color, rock_color);
         //}
 
     }
 
-    void Update(){
-        if(cubicCluster){
-            playAreaWorldGen.UpdateBlockTypeSelected(1);
-            cubicCluster = false;
-        }
-        if(flatCluster){
-            playAreaWorldGen.UpdateBlockTypeSelected(2);
-            flatCluster = false;
-        }
-        if(tallCluster){
-            playAreaWorldGen.UpdateBlockTypeSelected(3);
-            tallCluster = false;
-        }
-    }
+    // void Update(){
+    //     if(cubicCluster){
+    //         playAreaWorldGen.UpdateBlockTypeSelected(1);
+    //         cubicCluster = false;
+    //     }
+    //     if(flatCluster){
+    //         playAreaWorldGen.UpdateBlockTypeSelected(2);
+    //         flatCluster = false;
+    //     }
+    //     if(tallCluster){
+    //         playAreaWorldGen.UpdateBlockTypeSelected(3);
+    //         tallCluster = false;
+    //     }
+    // }
 
     /*
      * This method is used to generate a random type of clouds for the world. All random functions use the seed

@@ -80,21 +80,8 @@ public abstract class Cluster : MonoBehaviour
         maxSize = 0.5f;
         minSize = 0.1f;
 
-        //cache these values so multiple calls to GetRandomPointOnMesh doesnt kill the generation
-        Mesh mesh = parentBlock.GetComponent<MeshFilter>().sharedMesh;
-        float[] sizes = GetTriSizes(mesh.triangles, mesh.vertices);
-        float[] cumulativeSizes = new float[sizes.Length];
-        float total = 0;
 
-
-        for (int i = 0; i < sizes.Length; i++)
-        {
-            total += sizes[i];
-            cumulativeSizes[i] = total;
-        }
-
-
-        int numDetailBlocks = Random.Range(5, 15);
+        int numDetailBlocks = Random.Range(5, 10);
 
         for(int i = 0; i < numDetailBlocks; i ++){
             //create new clone of block on surface somewhere, set its rotation, and set parent
@@ -106,70 +93,30 @@ public abstract class Cluster : MonoBehaviour
                                                          Random.Range(blocksize - (blocksize * 0.25f), blocksize + (blocksize * 0.25f)), 
                                                          Random.Range(blocksize - (blocksize * 0.25f), blocksize + (blocksize * 0.25f)));
 
-            tempBlock.transform.localPosition = GetRandomPointOnMesh(sizes, cumulativeSizes, total, mesh);
+            //tempBlock.transform.localPosition = GetRandomPointOnMesh(sizes, cumulativeSizes, total, mesh);
+            tempBlock.transform.localPosition = GetRandomPointOnCube(1.15f, blocksize);
         }
     }
 
-    /// <summary>
-    /// This function was borrowed from https://gist.github.com/v21/5378391. It generates a random point 
-    /// on a mesh. This is used to create the location of all of the small detail blocks. Originally it calculated
-    /// sizes, cumulativeSizes, and total each call, but because every time this is called, its the same mesh, then
-    /// I can store them outside and just pass them in, allowing the code to only calculate it once per call.
-    /// </summary>
-    /// <param name="sizes">cached sizes array</param>
-    /// <param name="cumulativeSizes">cached cumulative sizes array</param>
-    /// <param name="total">cached total count</param>
-    /// <returns></returns>
-    private Vector3 GetRandomPointOnMesh(float[] sizes, float[] cumulativeSizes, float total, Mesh mesh)
-    {
-        //if you're repeatedly doing this on a single mesh, you'll likely want to cache cumulativeSizes and total
-
-        //so everything above this point wants to be factored out
-
-        float randomsample = Random.value* total;
-
-        int triIndex = -1;
-        
-        for (int i = 0; i < sizes.Length; i++)
-        {
-            if (randomsample <= cumulativeSizes[i])
-            {
-                triIndex = i;
-                break;
-            }
+    private Vector3 GetRandomPointOnCube(float parentWidth, float blockSize){
+        float width = parentWidth - (blockSize * 0.2f);
+        float hw = parentWidth * 0.5f;
+        int side = Random.Range(0, 6);
+        switch(side){
+            case 0:
+                return new Vector3(-width, Random.Range(-hw, hw), Random.Range(-hw, hw));
+            case 1:
+                return new Vector3(width, Random.Range(-hw, hw), Random.Range(-hw, hw));
+            case 2:
+                return new Vector3(Random.Range(-hw, hw), -width, Random.Range(-hw, hw));
+            case 3:
+                return new Vector3(Random.Range(-hw, hw), width, Random.Range(-hw, hw));
+            case 4:
+                return new Vector3(Random.Range(-hw, hw), Random.Range(-hw, hw), -(width - 0.2f));
+            case 5:
+                return new Vector3(Random.Range(-hw, hw), Random.Range(-hw, hw), (width - 0.2f));
+            default:
+                return new Vector3(0, 0, 0);
         }
-
-        if (triIndex == -1) Debug.LogError("triIndex should never be -1");
-
-        Vector3 a = mesh.vertices[mesh.triangles[triIndex * 3]];
-        Vector3 b = mesh.vertices[mesh.triangles[triIndex * 3 + 1]];
-        Vector3 c = mesh.vertices[mesh.triangles[triIndex * 3 + 2]];
-
-        //generate random barycentric coordinates
-
-        float r = Random.value;
-        float s = Random.value;
-
-        if(r + s >=1)
-        {
-            r = 1 - r;
-            s = 1 - s;
-        }
-        //and then turn them back to a Vector3
-        Vector3 pointOnMesh = a + r*(b - a) + s*(c - a);
-        return pointOnMesh;
-
-    }
-
-    private float[] GetTriSizes(int[] tris, Vector3[] verts)
-    {
-        int triCount = tris.Length / 3;
-        float[] sizes = new float[triCount];
-        for (int i = 0; i < triCount; i++)
-        {
-            sizes[i] = .5f*Vector3.Cross(verts[tris[i*3 + 1]] - verts[tris[i*3]], verts[tris[i*3 + 2]] - verts[tris[i*3]]).magnitude;
-        }
-        return sizes;
     }
 }
-
