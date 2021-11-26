@@ -16,6 +16,7 @@ public class PlayAreaWorldGen
     private int seed;
     private Color grassColor;
     private Color rockColor;
+    private WorldType.Type worldType;
     private Vector3 worldTypeCollection;    //x=cubes, y=flats, z=talls
 
     private int worldTypeTracker = 1;
@@ -27,18 +28,19 @@ public class PlayAreaWorldGen
     /// <param name="seed"></param>
     /// <param name="grassColor"></param>
     /// <param name="rockColor"></param>
-    public PlayAreaWorldGen(GameObject worldBlock, int seed, Color grassColor, Color rockColor) {
+    public PlayAreaWorldGen(GameObject worldBlock, int seed, Color grassColor, Color rockColor, WorldType.Type worldType) {
 
         this.worldBlock = worldBlock;
         this.seed = seed;
         this.grassColor = grassColor;
         this.rockColor = rockColor;
+        this.worldType = worldType;
         //Random.InitState(seed);
 
         //clusterCount = Random.Range(300, 400);
         hugeClusters = Random.Range(20, 40);
 
-        this.worldTypeCollection = PickWorldType();
+        this.worldTypeCollection = PickWorldType(this.worldType);
     }
 
     // public void UpdateBlockTypeSelected(int type){
@@ -155,17 +157,16 @@ public class PlayAreaWorldGen
     /// With a Vector3, x = flatCount, y = tallCount, z = normalCount
     /// </summary>
     /// <returns>Vector3 containing count of each cluster type to build</returns>
-    private Vector3 PickWorldType(){
-        int res = Random.Range(0, 3);
-        switch(res){
-            case 1:
+    private Vector3 PickWorldType(WorldType.Type type){
+        switch(type){
+            case WorldType.Type.Cube:
                 return new Vector3(80, 10, 10);     //cubic world type
-            case 2: 
+            case WorldType.Type.Flat: 
                 return new Vector3(10, 80, 10);     //flat world type
-            case 3:
+            case WorldType.Type.Tall:
                 return new Vector3(10, 10, 80);     //tall world type
             default:
-                return new Vector3 (0, 0, 0);
+                return new Vector3 (80, 10, 10);
         }
     }
 }

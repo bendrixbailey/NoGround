@@ -44,6 +44,7 @@ public class WorldGenerator : MonoBehaviour
     private Color cloudColor;
     private Color grassColor;
     private Color rockColor;
+    private WorldType.Type worldType;
 
     private PlayAreaWorldGen playAreaWorldGen;
 
@@ -72,10 +73,14 @@ public class WorldGenerator : MonoBehaviour
 
         GenerateClouds();
 
+        worldType = PickWorldType();
+
+
+
         //if (seed % 2 == 0) {
         //Generates a new world type with a cubic layout.
         //More worldtypes will be implemented here, and it will be randomly chosen based off the seeed
-        playAreaWorldGen = new PlayAreaWorldGen(worldBlock, seed, grassColor, rockColor);
+        playAreaWorldGen = new PlayAreaWorldGen(worldBlock, seed, grassColor, rockColor, worldType);
 
         playAreaWorldGen.CreateWorld();
         //var unused = new CubicWorldType(new GameObject("Landscape"), worldBlock, seed, grass_color, rock_color);
@@ -83,20 +88,21 @@ public class WorldGenerator : MonoBehaviour
 
     }
 
-    // void Update(){
-    //     if(cubicCluster){
-    //         playAreaWorldGen.UpdateBlockTypeSelected(1);
-    //         cubicCluster = false;
-    //     }
-    //     if(flatCluster){
-    //         playAreaWorldGen.UpdateBlockTypeSelected(2);
-    //         flatCluster = false;
-    //     }
-    //     if(tallCluster){
-    //         playAreaWorldGen.UpdateBlockTypeSelected(3);
-    //         tallCluster = false;
-    //     }
-    // }
+
+
+    private WorldType.Type PickWorldType(){
+        int toop = Random.Range(0, 3);
+        switch(toop){
+            case 0:
+                return WorldType.Type.Cube;
+            case 1:
+                return WorldType.Type.Flat;
+            case 2: 
+                return WorldType.Type.Tall;
+            default:
+                return WorldType.Type.Cube;
+        }
+    }
 
     /*
      * This method is used to generate a random type of clouds for the world. All random functions use the seed

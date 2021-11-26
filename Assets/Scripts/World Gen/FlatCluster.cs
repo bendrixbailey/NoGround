@@ -29,7 +29,7 @@ public class FlatCluster: Cluster
         materials[0].color = body_color;
         clusterParent = parent;
 
-        block_count = Random.Range(4, 10);
+        block_count = Random.Range(4, 8);
 
         if (block_count > 6)
         {
