@@ -19,12 +19,12 @@ public class TallCluster: Cluster
      * determined by the world generator.
      * 
      */
-    public void MakeTallCluster(GameObject parent, GameObject worldBlock, int seed, Color top_color, Color body_color, Vector3 origin_point) { 
+    public void MakeTallCluster(GameObject parent, GameObject worldBlock, int seed, Color top_color, Color body_color) { 
 
         Material[] materials = worldBlock.GetComponent<MeshRenderer>().sharedMaterials;
         block = worldBlock;
         //Random.InitState(seed);
-        this.origin_point = origin_point;
+        this.origin_point = new Vector3(0, 0, 0);
         materials[1].color = top_color;
         materials[0].color = body_color;
         clusterParent = parent;
@@ -46,11 +46,10 @@ public class TallCluster: Cluster
 
             //GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, Random.Range(0, 180), 0));
             //GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, 0, 0));
-            GameObject newblock = Instantiate(block, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0));
+            GameObject newblock = Instantiate(block, CalculatePoint(origin_point, max_origin_offset), Quaternion.Euler(-90, 0, 0));
             AddSurfaceDetail(newblock, block, 0, 0);
-            newblock.transform.localScale = CalculateScale(.75f, 5, WorldType.Type.Tall);
-            newblock.transform.position = CalculatePoint(origin_point, max_origin_offset);
-            newblock.transform.parent = clusterParent.transform;
+            newblock.transform.localScale = CalculateScale(.75f, 3, WorldType.Type.Tall);
+            newblock.transform.SetParent(clusterParent.transform);
 
         }
     }
